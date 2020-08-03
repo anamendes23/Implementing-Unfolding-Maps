@@ -1,11 +1,20 @@
 //Protecting your data and methods
 //public means can access from any class
+//private means can access only from SimpleLocation
+//RULE OF THUMB: make member variables private (and methods either public or private)
+//METHODS:
+//public: for world use
+//private: helper methods
+//give the right level of access
+//getters and setters
+//can the user change the value?
+//getters and setters give us more control
 
 public class SimpleLocation {
     //data associated with SimpleLocation
     //member variables: data the objects need to store
-    double latitude;
-    double longitude;
+    public double latitude;
+    private double longitude;
 
     //constructor: method to create a new object
     //no return type
@@ -13,6 +22,7 @@ public class SimpleLocation {
     //parameter constructor
     public SimpleLocation(double lat, double lon) {
         this.latitude = lat;
+        //allowed to access longitude even though it's private because it's within the class
         this.longitude = lon;
     }
 
@@ -21,6 +31,25 @@ public class SimpleLocation {
     public SimpleLocation() {
         this.latitude = 0.0;
         this.longitude = 0.0;
+    }
+    //getter
+    public double getLongitude() {
+        return this.longitude;
+    }
+    //setter
+    public void setLongitude(double lon) {
+        if(lon < -180 || lon > 180)
+            System.out.println("Invalid longitude value.");
+        else
+            this.longitude = lon;
+    }
+
+    //setter
+    public void setLatitude(double lat) {
+        if(lat < -90 || lat > 80)
+            System.out.println("Invalid latitude value.");
+        else
+            this.latitude = lat;
     }
 
     //Methods: the things this class can do
