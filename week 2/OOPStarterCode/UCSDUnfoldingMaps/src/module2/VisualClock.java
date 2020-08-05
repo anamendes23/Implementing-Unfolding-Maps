@@ -20,10 +20,9 @@ public class VisualClock extends PApplet{
     public void draw() {
         background(0);
         image(backgroundImg, 0,0);
+        drawSmileyFace();
         updateColors();
-        fill(red,green,blue);
-        stroke(red,green,blue);
-        ellipse((width/4)*3.3f, height/5, width/6, height/5);
+        drawSun();
     }
 
     private void updateColors() {
@@ -33,5 +32,23 @@ public class VisualClock extends PApplet{
         red = 255 - time * 3;
         green = 209- time;
         blue = time * 8;
+    }
+
+    private void drawSun() {
+        fill(red,green,blue);
+        stroke(red,green,blue);
+        ellipse((width/4)*3.3f, height/5, width/6, height/5);
+    }
+
+    private void drawSmileyFace() {
+        fill(255,209,0);
+        stroke(0,0,0);
+        ellipse(100,100,150,150);
+        fill(0,0,0);
+        ellipse(80,85,30,40);
+        fill(0,0,0);
+        ellipse(120,85,30,40);
+        noFill();
+        arc(100,120, 70,70,0,PI);
     }
 }
