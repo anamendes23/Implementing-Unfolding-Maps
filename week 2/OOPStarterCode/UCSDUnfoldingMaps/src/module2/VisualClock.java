@@ -8,8 +8,9 @@ public class VisualClock extends PApplet{
     private PImage backgroundImg;
 
     public void setup(){
-        size(900,506);
+        size(500,400);
         backgroundImg = loadImage(url, "jpg");
+        backgroundImg.resize(0,height);
     }
 
     public void draw() {
