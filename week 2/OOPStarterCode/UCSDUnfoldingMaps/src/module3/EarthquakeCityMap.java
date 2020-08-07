@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Processing library
+import de.fhpotsdam.unfolding.geo.Location;
 import processing.core.PApplet;
 
 //Unfolding libraries
@@ -64,7 +65,12 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		
 	    map.zoomToLevel(2);
-	    MapUtils.createDefaultEventDispatcher(this, map);	
+	    MapUtils.createDefaultEventDispatcher(this, map);
+
+	    //Learning about markers
+		Location valLoc = new Location(-38.14f, -73.03f);
+		SimplePointMarker val = new SimplePointMarker(valLoc);
+		map.addMarker(val);
 			
 	    // The List you will populate with new SimplePointMarkers
 	    List<Marker> markers = new ArrayList<Marker>();
