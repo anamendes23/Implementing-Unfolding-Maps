@@ -136,12 +136,15 @@ public class EarthquakeCityMap extends PApplet {
 	    // above if you want to change what you mean by "moderate" and "light")
 	    if(mag > 5f) {
 			marker.setColor(red);
+			marker.setRadius(15.0f);
 		}
 	    else if (mag > 4f) {
 			marker.setColor(yellow);
+			marker.setRadius(10.0f);
 		}
 	    else {
 	    	marker.setColor(blue);
+			marker.setRadius(5.0f);
 		}
 	    
 	    // Finally return the marker
