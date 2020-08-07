@@ -126,6 +126,9 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 	    int red = color(255,0,0);
 	    int blue = color(0,0,255);
+	    float large = 15f;
+	    float medium = 10f;
+	    float small = 5f;
 		
 		// TODO (Step 4): Add code below to style the marker's size and color 
 	    // according to the magnitude of the earthquake.  
@@ -136,15 +139,15 @@ public class EarthquakeCityMap extends PApplet {
 	    // above if you want to change what you mean by "moderate" and "light")
 	    if(mag > 5f) {
 			marker.setColor(red);
-			marker.setRadius(15.0f);
+			marker.setRadius(large);
 		}
 	    else if (mag > 4f) {
 			marker.setColor(yellow);
-			marker.setRadius(10.0f);
+			marker.setRadius(medium);
 		}
 	    else {
 	    	marker.setColor(blue);
-			marker.setRadius(5.0f);
+			marker.setRadius(small);
 		}
 	    
 	    // Finally return the marker
@@ -163,6 +166,23 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
-	
+		//draw background (rectangle)
+		fill(255,255,255);
+		rect(25,50,150,250);
+		//write text
+		fill(0,0,0);
+		text("Earthquake Key", 55,80);
+		text("5.0+ Magnitude", 70,130);
+		text("4.0+ Magnitude", 70,180);
+		text("Below 4.0", 70,230);
+		//draw large circle
+		fill(255,0,0);
+		ellipse(50,125,15,15);
+		//draw medium circle
+		fill(255,255,0);
+		ellipse(50,175,10,10);
+		//draw small circle
+		fill(0,0,255);
+		ellipse(50,225,5,5);
 	}
 }
