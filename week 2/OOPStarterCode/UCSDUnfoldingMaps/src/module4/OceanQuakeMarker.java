@@ -30,7 +30,17 @@ public class OceanQuakeMarker extends EarthquakeMarker {
 		// and how it is set in the EarthquakeMarker constructor
 		
 		// TODO: Implement this method
-		
+		float mag = getMagnitude();
+
+		if(mag > THRESHOLD_MODERATE) {
+			pg.rect(x - 7.5f, y - 7.5f, 15, 15);
+		}
+		else if (mag > THRESHOLD_LIGHT) {
+			pg.rect(x - 5, y - 5, 10, 10);
+		}
+		else {
+			pg.rect(x - 2.5f, y - 2.5f, 5, 5);
+		}
 	}
 	
 
