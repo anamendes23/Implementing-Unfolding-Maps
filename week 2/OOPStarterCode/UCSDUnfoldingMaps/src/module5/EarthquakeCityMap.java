@@ -13,6 +13,7 @@ import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
+import de.fhpotsdam.unfolding.providers.OpenStreetMap;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
@@ -70,7 +71,7 @@ public class EarthquakeCityMap extends PApplet {
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 650, 600, new OpenStreetMap.OpenStreetMapProvider());//Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -117,10 +118,26 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	public void draw() {
-		background(0);
+		//background(0);
 		map.draw();
 		addKey();
-		
+		//creating two buttons that change the background color to either white or gray
+		//overriding mouse release method to perform the action
+		fill(255,255,255);
+		rect(100,100,25,25);
+		fill(100,100,100);
+		rect(100,150,25,25);
+	}
+
+	//method changes background color to either white or gray depending on which button was clicked
+	@Override
+	public void mouseReleased() {
+		if(mouseX > 100 && mouseX < 125 && mouseY > 100 && mouseY < 125) {
+			background(255,255,255);
+		}
+		else if(mouseX > 100 && mouseX < 125 && mouseY > 150 && mouseY < 175) {
+			background(100,100,100);
+		}
 	}
 	
 	/** Event handler that gets called automatically when the 

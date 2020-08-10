@@ -84,7 +84,7 @@ public class EarthquakeCityMap extends PApplet {
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -130,7 +130,7 @@ public class EarthquakeCityMap extends PApplet {
 		map.draw();
 		addKey();
 	}
-	
+
 	// helper method to draw key in GUI
 	// TODO: Update this method as appropriate
 	private void addKey() {	
