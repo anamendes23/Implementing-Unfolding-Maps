@@ -49,10 +49,10 @@ public class CityMarker extends CommonMarker {
 	{
 		// TODO: Implement this method
 		pg.fill(240, 238, 197);
-		pg.rect(x, y, 200, 20);
+		pg.rect(x+5, y+5, 200, 20);
 		pg.fill(0,0,0);
 		String s = this.getProperty("name").toString() + ", " + this.getProperty("country").toString() + ", Pop. " + this.getProperty("population").toString();
-		pg.text(s, x + 5, y + 15);
+		pg.text(s, x + 10, y + 20);
 	}
 	
 	/* Local getters for some city properties.  

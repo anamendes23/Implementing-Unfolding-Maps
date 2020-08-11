@@ -12,6 +12,7 @@ import de.fhpotsdam.unfolding.marker.AbstractMarker;
 import de.fhpotsdam.unfolding.marker.AbstractShapeMarker;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
+import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.providers.OpenStreetMap;
@@ -188,9 +189,52 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		// clear the last clicked
+		if (lastClicked != null) {
+			lastClicked.setSelected(false);
+			lastClicked = null;
+			unhideMarkers();
+		}
+		else if(lastSelected instanceof CommonMarker){
+			if (lastSelected instanceof EarthquakeMarker) {
+				hideMarkers((EarthquakeMarker) lastSelected);
+			}
+			else if (lastSelected instanceof CityMarker)
+				hideMarkers((CityMarker) lastSelected);
+			lastClicked = lastSelected;
+			lastClicked.setSelected(true);
+		}
 	}
-	
-	
+
+	// loop over and hide all markers except within radio
+	private void hideMarkers(EarthquakeMarker em) {
+		double threatCircle = em.threatCircle();
+
+		for(Marker marker : quakeMarkers) {
+			if(em.getLocation().getDistance(marker.getLocation()) > threatCircle)
+				marker.setHidden(true);
+		}
+
+		for(Marker marker : cityMarkers) {
+			if(em.getLocation().getDistance(marker.getLocation()) > threatCircle)
+				marker.setHidden(true);
+		}
+	}
+
+	// loop over and hide all markers except within radio
+	private void hideMarkers(CityMarker cm) {
+		for(Marker marker : quakeMarkers) {
+			double threatCircle = ((EarthquakeMarker)marker).threatCircle();
+			if(marker.getLocation().getDistance(cm.getLocation()) > threatCircle)
+				marker.setHidden(true);
+		}
+
+		for(Marker marker : cityMarkers) {
+			marker.setHidden(true);
+		}
+		cm.setHidden(false);
+	}
+
 	// loop over and unhide all markers
 	private void unhideMarkers() {
 		for(Marker marker : quakeMarkers) {
