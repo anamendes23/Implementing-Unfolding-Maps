@@ -8,6 +8,7 @@ import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.GeoJSONReader;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.AbstractMarker;
 import de.fhpotsdam.unfolding.marker.AbstractShapeMarker;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
@@ -121,12 +122,14 @@ public class EarthquakeCityMap extends PApplet {
 		//background(0);
 		map.draw();
 		addKey();
+		/*
 		//creating two buttons that change the background color to either white or gray
 		//overriding mouse release method to perform the action
 		fill(255,255,255);
 		rect(100,100,25,25);
 		fill(100,100,100);
 		rect(100,150,25,25);
+		*/
 	}
 
 	//method changes background color to either white or gray depending on which button was clicked
@@ -163,6 +166,15 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		if(lastSelected == null) {
+			for (Marker m : markers) {
+				if(m.isInside(map, mouseX, mouseY)) {
+					lastSelected = (CommonMarker)m;
+					lastSelected.setSelected(true);
+					return;
+				}
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
