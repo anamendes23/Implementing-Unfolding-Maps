@@ -72,7 +72,7 @@ public class SearchAndSort {
 		int high = airports.size()-1;
 		int mid;
 		while (low <= high) {
-			mid = low + ((high-low)/2);
+			mid = low + ((high-low)/2); // this is done this way to avoid overflow
 			int compare = toFind.compareTo(airports.get(mid).getCity());
 			if (compare < 0) {
 				high = mid - 1;
@@ -113,17 +113,18 @@ public class SearchAndSort {
 	}
 	
 	/** Sort an array of ints using a mystery algorithm */
+	//Mystery Sort is Insertion Sort
 	public static void mysterySort( int[] vals )    {
-		  int currInd;
-		  for ( int pos=1; pos < vals.length ; pos++ ) {
+		int currInd;
+		for ( int pos=1; pos < vals.length ; pos++ ) {
 		    currInd = pos ;
 		    while ( currInd > 0 && 
 			    vals[currInd] < vals[currInd-1] ) {
 		      swap(vals, currInd, currInd-1);
 		      currInd = currInd - 1;
 		    }
-		  }
 		}
+	}
 
 	
 	public static void main(String[] args) throws IOException
