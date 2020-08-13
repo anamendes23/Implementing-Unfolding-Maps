@@ -133,6 +133,7 @@ public class EarthquakeCityMap extends PApplet {
 		background(0);
 		map.draw();
 		addKey();
+		addInfoBox();
 	}
 	
 	
@@ -160,7 +161,18 @@ public class EarthquakeCityMap extends PApplet {
 			System.out.println(quakes[i].toString());
 		}
 	}
-	
+
+	public void mouseReleased() {
+		//References to click on key
+		//Shallow (45, 185, 120, 15);
+		//Intermediate (45, 205, 120, 15);
+		//Deep (45, 225, 120, 15);
+		//PastHour (45, 245, 120, 15);
+		//TODO add code to check if the mouse was released
+		//in the area of the key around each of the quake categories
+		//then filter markers based on depth
+	}
+
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.
 	 */
@@ -343,17 +355,67 @@ public class EarthquakeCityMap extends PApplet {
 		strokeWeight(2);
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
-
-		//draw buttons
-		fill(255,0,255);
-		rect(xbase+20, ybase+135, 120, 15);
-		rect(xbase+20, ybase+155, 120, 15);
-		rect(xbase+20, ybase+175, 120, 15);
-		rect(xbase+20, ybase+195, 120, 15);
 	}
 
-	
-	
+	//helper method to draw additional info in GUI
+	private void addInfoBox() {
+		fill(255, 250, 240);
+
+		int xbase = 25; //880;
+		int ybase = 330; //50;
+
+		rect(xbase, ybase, 150, 250);
+
+		fill(0);
+		textAlign(LEFT, CENTER);
+		textSize(12);
+		text("Earthquake Info", xbase+25, ybase+25);
+		//call this method somewhere else later
+		addTextToInfoBox("Title", "Magnitude", "Location");
+	}
+
+	private void addTextToInfoBox(String title, String magnitude, String location) {
+		int xbase = 25;
+		int ybase = 330;
+
+		fill(0, 0, 0);
+		ellipse(xbase+20, ybase+50, 2, 2);
+		ellipse(xbase+20, ybase+90, 2, 2);
+		ellipse(xbase+20, ybase+130, 2, 2);
+
+		textAlign(LEFT, CENTER);
+		text("Title:", xbase + 28, ybase + 48);
+		text(title, xbase+28, ybase+68);
+		text("Magnitude", xbase+28, ybase+88);
+		text(magnitude, xbase+28, ybase+108);
+		text("Location:", xbase+28, ybase+128);
+		text(location, xbase+28, ybase+148);
+
+		/*fill(color(231, 160, 242));
+		ellipse(xbase+35, ybase+140, 12, 12);
+		fill(color(172, 64, 189));
+		ellipse(xbase+35, ybase+160, 12, 12);
+		fill(color(90, 9, 102));
+		ellipse(xbase+35, ybase+180, 12, 12);
+
+		textAlign(LEFT, CENTER);
+		fill(0, 0, 0);
+		text("Shallow", xbase+50, ybase+140);
+		text("Intermediate", xbase+50, ybase+160);
+		text("Deep", xbase+50, ybase+180);
+
+		text("Past hour", xbase+50, ybase+200);
+
+		fill(255, 255, 255);
+		int centerx = xbase+35;
+		int centery = ybase+200;
+		ellipse(centerx, centery, 12, 12);
+
+		strokeWeight(2);
+		line(centerx-8, centery-8, centerx+8, centery+8);
+		line(centerx-8, centery+8, centerx+8, centery-8);*/
+	}
+
 	// Checks whether this quake occurred on land.  If it did, it sets the 
 	// "country" property of its PointFeature to the country where it occurred
 	// and returns true.  Notice that the helper method isInCountry will
@@ -367,7 +429,6 @@ public class EarthquakeCityMap extends PApplet {
 				return true;
 			}
 		}
-		
 		// not inside any country
 		return false;
 	}
