@@ -14,6 +14,7 @@ import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
+import de.fhpotsdam.unfolding.providers.OpenStreetMap;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
@@ -73,7 +74,7 @@ public class EarthquakeCityMap extends PApplet {
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 650, 600, new OpenStreetMap.OpenStreetMapProvider()); //Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -132,7 +133,6 @@ public class EarthquakeCityMap extends PApplet {
 		background(0);
 		map.draw();
 		addKey();
-		
 	}
 	
 	
@@ -298,7 +298,7 @@ public class EarthquakeCityMap extends PApplet {
 		textSize(12);
 		text("Earthquake Key", xbase+25, ybase+25);
 		
-		fill(150, 30, 30);
+		fill(250, 250, 0);
 		int tri_xbase = xbase + 35;
 		int tri_ybase = ybase + 50;
 		triangle(tri_xbase, tri_ybase-CityMarker.TRI_SIZE, tri_xbase-CityMarker.TRI_SIZE, 
@@ -320,11 +320,11 @@ public class EarthquakeCityMap extends PApplet {
 				10);
 		rect(xbase+35-5, ybase+90-5, 10, 10);
 		
-		fill(color(255, 255, 0));
+		fill(color(231, 160, 242));
 		ellipse(xbase+35, ybase+140, 12, 12);
-		fill(color(0, 0, 255));
+		fill(color(172, 64, 189));
 		ellipse(xbase+35, ybase+160, 12, 12);
-		fill(color(255, 0, 0));
+		fill(color(90, 9, 102));
 		ellipse(xbase+35, ybase+180, 12, 12);
 		
 		textAlign(LEFT, CENTER);
@@ -343,8 +343,13 @@ public class EarthquakeCityMap extends PApplet {
 		strokeWeight(2);
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
-		
-		
+
+		//draw buttons
+		fill(255,0,255);
+		rect(xbase+20, ybase+135, 120, 15);
+		rect(xbase+20, ybase+155, 120, 15);
+		rect(xbase+20, ybase+175, 120, 15);
+		rect(xbase+20, ybase+195, 120, 15);
 	}
 
 	
