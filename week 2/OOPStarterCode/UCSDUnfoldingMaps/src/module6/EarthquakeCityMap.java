@@ -2,7 +2,9 @@ package module6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -16,6 +18,7 @@ import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.providers.OpenStreetMap;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import demos.LifeExpectancy;
 import parsing.ParseFeed;
 import processing.core.PApplet;
 
@@ -65,7 +68,10 @@ public class EarthquakeCityMap extends PApplet {
 	// NEW IN MODULE 5
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
-	
+
+	//Added for final project
+	private Map<String, Float> lifeExpByCountry;
+
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -126,6 +132,10 @@ public class EarthquakeCityMap extends PApplet {
 	    map.addMarkers(cityMarkers);
 	    
 	    sortAndPrint(20);
+
+	    //load data from life expectancy for final project
+		LifeExpectancy le = new LifeExpectancy();
+		lifeExpByCountry = le.loadLifeExpectancyFromCSV("LifeExpectancyWorldBankModule3.csv");
 	}  // End setup
 	
 	
@@ -134,6 +144,8 @@ public class EarthquakeCityMap extends PApplet {
 		map.draw();
 		addKey();
 		addInfoBox();
+		if(lastClicked != null && lastClicked instanceof EarthquakeMarker)
+			addTextToInfoBox((EarthquakeMarker)lastClicked);
 	}
 	
 	
@@ -364,17 +376,31 @@ public class EarthquakeCityMap extends PApplet {
 		int xbase = 25; //880;
 		int ybase = 330; //50;
 
-		rect(xbase, ybase, 150, 250);
+		rect(xbase, ybase, 150, 200);
 
 		fill(0);
 		textAlign(LEFT, CENTER);
 		textSize(12);
 		text("Earthquake Info", xbase+25, ybase+25);
-		//call this method somewhere else later
-		addTextToInfoBox("Title", "Magnitude", "Location");
 	}
 
-	private void addTextToInfoBox(String title, String magnitude, String location) {
+	private void addTextToInfoBox(EarthquakeMarker marker) {
+
+		if(marker == null) return;
+
+		String temp = marker.getTitle();
+		String location = "N/A";
+		int index = temp.indexOf('-');
+		if(index != -1) {
+			index = temp.indexOf(',', index);
+			if(index != -1)
+				location = temp.substring(index + 1).trim();
+		}
+		String magnitude = "" + marker.getMagnitude();
+		String lifeExpectancy = "N/A";
+		if(lifeExpByCountry.containsKey(location))
+			lifeExpectancy = lifeExpByCountry.get(location).toString();
+
 		int xbase = 25;
 		int ybase = 330;
 
@@ -384,36 +410,12 @@ public class EarthquakeCityMap extends PApplet {
 		ellipse(xbase+20, ybase+130, 2, 2);
 
 		textAlign(LEFT, CENTER);
-		text("Title:", xbase + 28, ybase + 48);
-		text(title, xbase+28, ybase+68);
+		text("Location:", xbase + 28, ybase + 48);
+		text(location, xbase+28, ybase+68);
 		text("Magnitude", xbase+28, ybase+88);
 		text(magnitude, xbase+28, ybase+108);
-		text("Location:", xbase+28, ybase+128);
-		text(location, xbase+28, ybase+148);
-
-		/*fill(color(231, 160, 242));
-		ellipse(xbase+35, ybase+140, 12, 12);
-		fill(color(172, 64, 189));
-		ellipse(xbase+35, ybase+160, 12, 12);
-		fill(color(90, 9, 102));
-		ellipse(xbase+35, ybase+180, 12, 12);
-
-		textAlign(LEFT, CENTER);
-		fill(0, 0, 0);
-		text("Shallow", xbase+50, ybase+140);
-		text("Intermediate", xbase+50, ybase+160);
-		text("Deep", xbase+50, ybase+180);
-
-		text("Past hour", xbase+50, ybase+200);
-
-		fill(255, 255, 255);
-		int centerx = xbase+35;
-		int centery = ybase+200;
-		ellipse(centerx, centery, 12, 12);
-
-		strokeWeight(2);
-		line(centerx-8, centery-8, centerx+8, centery+8);
-		line(centerx-8, centery+8, centerx+8, centery-8);*/
+		text("Life Expectancy:", xbase+28, ybase+128);
+		text(lifeExpectancy, xbase+28, ybase+148);
 	}
 
 	// Checks whether this quake occurred on land.  If it did, it sets the 
@@ -496,5 +498,4 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		return false;
 	}
-
 }

@@ -74,7 +74,7 @@ public class LifeExpectancy extends PApplet {
 	}
 
 	//Helper method to load life expectancy data from file
-	private Map<String, Float> loadLifeExpectancyFromCSV(String fileName) {
+	public Map<String, Float> loadLifeExpectancyFromCSV(String fileName) {
 		Map<String, Float> lifeExpMap = new HashMap<String, Float>();
 
 		String[] rows = loadStrings(fileName);
@@ -85,8 +85,11 @@ public class LifeExpectancy extends PApplet {
 			// We do a smarter thing in ParseFeed, but for simplicity, 
 			// we just use a comma here, and ignore the fact that the first field is split.
 			String[] columns = row.split(",");
-			if (columns.length == 6 && !columns[5].equals("..")) {
+			/*if (columns.length == 6 && !columns[5].equals("..")) {
 				lifeExpMap.put(columns[4], Float.parseFloat(columns[5]));
+			}*/
+			if (columns.length == 6 && !columns[5].equals("..")) {
+				lifeExpMap.put(columns[3], Float.parseFloat(columns[5]));
 			}
 		}
 
