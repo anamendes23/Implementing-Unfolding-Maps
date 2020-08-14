@@ -71,6 +71,9 @@ public class EarthquakeCityMap extends PApplet {
 
 	//Added for final project
 	private Map<String, Float> lifeExpByCountry;
+	private boolean isShalowFiltered;
+	private boolean isIntermediateFiltered;
+	private boolean isDeepFiltered;
 
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
@@ -136,6 +139,11 @@ public class EarthquakeCityMap extends PApplet {
 	    //load data from life expectancy for final project
 		LifeExpectancy le = new LifeExpectancy();
 		lifeExpByCountry = le.loadLifeExpectancyFromCSV("LifeExpectancyWorldBankModule3.csv");
+
+		//set all filters to False
+		isShalowFiltered = false;
+		isIntermediateFiltered = false;
+		isDeepFiltered = false;
 	}  // End setup
 	
 	
@@ -144,7 +152,7 @@ public class EarthquakeCityMap extends PApplet {
 		map.draw();
 		addKey();
 		addInfoBox();
-		if(lastClicked != null && lastClicked instanceof EarthquakeMarker)
+		if(lastSelected != null && lastSelected instanceof EarthquakeMarker)
 			addTextToInfoBox((EarthquakeMarker)lastClicked);
 	}
 	
@@ -179,10 +187,66 @@ public class EarthquakeCityMap extends PApplet {
 		//Shallow (45, 185, 120, 15);
 		//Intermediate (45, 205, 120, 15);
 		//Deep (45, 225, 120, 15);
-		//PastHour (45, 245, 120, 15);
 		//TODO add code to check if the mouse was released
 		//in the area of the key around each of the quake categories
 		//then filter markers based on depth
+		if(mouseX > 45 && mouseX < 165 && mouseY > 185 && mouseY < 200) {
+			//if filter is off, hide all other markers and unhide all shallow
+			//don't hide lastSelected or lastChecked
+			if(!isShalowFiltered) {
+				for(Marker m : quakeMarkers) {
+					EarthquakeMarker marker = (EarthquakeMarker) m;
+					if(marker != lastSelected && marker != lastClicked) {
+						if(marker.getDepth() > 70)
+							marker.setHidden(true);
+					}
+				}
+				isShalowFiltered = true;
+			}
+			//if filter is on, unhide everything
+			else {
+				unhideMarkers();
+				isShalowFiltered = false;
+			}
+		}
+		else if(mouseX > 45 && mouseX < 165 && mouseY > 205 && mouseY < 220) {
+			//if filter is off, hide all other markers and unhide all intermidiate
+			//don't hide lastSelected or lastChecked
+			if(!isIntermediateFiltered) {
+				for(Marker m : quakeMarkers) {
+					EarthquakeMarker marker = (EarthquakeMarker) m;
+					if(marker != lastSelected && marker != lastClicked) {
+						if(marker.getDepth() < 70 || marker.getDepth() > 300)
+							marker.setHidden(true);
+					}
+				}
+				isIntermediateFiltered = true;
+			}
+			//if filter is on, unhide everything
+			else {
+				unhideMarkers();
+				isIntermediateFiltered = false;
+			}
+		}
+		else if(mouseX > 45 && mouseX < 165 && mouseY > 225 && mouseY < 240) {
+			//if filter is off, hide all other markers and unhide all deep
+			//don't hide lastSelected or lastChecked
+			if(!isDeepFiltered) {
+				for(Marker m : quakeMarkers) {
+					EarthquakeMarker marker = (EarthquakeMarker) m;
+					if(marker != lastSelected && marker != lastClicked) {
+						if(marker.getDepth() < 300)
+							marker.setHidden(true);
+					}
+				}
+				isDeepFiltered = true;
+			}
+			//if filter is on, unhide everything
+			else {
+				unhideMarkers();
+				isDeepFiltered = false;
+			}
+		}
 	}
 
 	/** Event handler that gets called automatically when the 
@@ -376,7 +440,7 @@ public class EarthquakeCityMap extends PApplet {
 		int xbase = 25; //880;
 		int ybase = 330; //50;
 
-		rect(xbase, ybase, 150, 200);
+		rect(xbase, ybase, 150, 250);
 
 		fill(0);
 		textAlign(LEFT, CENTER);
@@ -400,6 +464,7 @@ public class EarthquakeCityMap extends PApplet {
 		String lifeExpectancy = "N/A";
 		if(lifeExpByCountry.containsKey(location))
 			lifeExpectancy = lifeExpByCountry.get(location).toString();
+		String depth = "" + marker.getDepth();
 
 		int xbase = 25;
 		int ybase = 330;
@@ -408,14 +473,17 @@ public class EarthquakeCityMap extends PApplet {
 		ellipse(xbase+20, ybase+50, 2, 2);
 		ellipse(xbase+20, ybase+90, 2, 2);
 		ellipse(xbase+20, ybase+130, 2, 2);
+		ellipse(xbase+20, ybase+170, 2, 2);
 
 		textAlign(LEFT, CENTER);
 		text("Location:", xbase + 28, ybase + 48);
 		text(location, xbase+28, ybase+68);
 		text("Magnitude", xbase+28, ybase+88);
 		text(magnitude, xbase+28, ybase+108);
-		text("Life Expectancy:", xbase+28, ybase+128);
-		text(lifeExpectancy, xbase+28, ybase+148);
+		text("Depth:", xbase+28, ybase+128);
+		text(depth, xbase+28, ybase+148);
+		text("Life Expectancy:", xbase+28, ybase+168);
+		text(lifeExpectancy, xbase+28, ybase+188);
 	}
 
 	// Checks whether this quake occurred on land.  If it did, it sets the 
